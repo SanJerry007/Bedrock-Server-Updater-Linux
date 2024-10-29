@@ -1,4 +1,4 @@
-echo "MINECRAFT BEDROCK SERVER UPDATE SCRIPT, v3.3 (2024/05/26)"
+echo "MINECRAFT BEDROCK SERVER UPDATE SCRIPT, v3.4 (2024/10/29)"
 
 # Directories
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
@@ -91,10 +91,10 @@ try {
     $requestResult = Invoke-WebRequest @InvokeWebRequestSplatt
     if ($requestResult -and $requestResult.Links) {
         # Parse download link and file name
-        $serverurl = $requestResult.Links | select href | where {$_.href -like "https://minecraft.azureedge.net/bin-win/bedrock-server*"}
+        $serverurl = $requestResult.Links | select href | where {$_.href -like "https://www.minecraft.net/bedrockdedicatedserver/bin-win/bedrock-server*"}
         if ($serverurl) {
             $url = $serverurl.href
-            $filename = $url.Replace("https://minecraft.azureedge.net/bin-win/", "")
+            $filename = $url.Replace("https://www.minecraft.net/bedrockdedicatedserver/bin-win/", "")
             $output = "$updateDir\$filename"
             Log-Message "NEWEST UPDATE AVAILABLE: $filename"
         } else {
