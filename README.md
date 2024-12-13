@@ -19,7 +19,7 @@ python auto_update.py <PATH_TO_SERVER> | tee <LOG_FILE>
 The script will automatically check if there exists a new version for your server. If exists, it will:
 
 1. Download and extract the latest server to `~/.cache/`.
-2. Create a `zip` backup of your server at `<PATH_TO_SERVER>/../server_backups/`.
+2. Create a `7z` backup of your server at `<PATH_TO_SERVER>/../server_backups/`.
 3. Update your server while preserving the worlds and configs (`worlds`, `allowlist.json`, `permissions.json`, `server.properties`).
 4. Remove the downloaded server cache to free the disk.
 
