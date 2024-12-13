@@ -287,7 +287,7 @@ def update_server(local_server_dir: str, latest_server_dir: str, target_server_d
 
     # 5. remove the `latest_server_dir`
     shutil.rmtree(latest_server_dir)
-    log_message(f"Removed the latest_server_dir \"{local_server_dir}\"")
+    log_message(f"Removed the latest_server_dir \"{latest_server_dir}\"")
 
 
 def delete_download_cache_files(download_dir: str, max_num: int = -1):
@@ -304,7 +304,7 @@ def delete_download_cache_files(download_dir: str, max_num: int = -1):
 
         if len(all_versions) > max_num:
             # O(n^2) complexity, can be optimized using sets.
-            # (It is kind of nauseous, so I use this inefficient implementation which is OK as the backups are usually very little)
+            # (It is kind of nauseous, so I use this inefficient implementation which is OK as the backups are usually very few)
             for filename in sorted(os.listdir(download_dir)):
                 if os.path.isfile(os.path.join(download_dir, filename)):
                     this_version = extract_numbers(filename, match_float=False, match_sign=False)
