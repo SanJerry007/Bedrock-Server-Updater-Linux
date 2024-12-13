@@ -19,7 +19,7 @@ python auto_update.py <PATH_TO_SERVER> | tee <LOG_FILE>
 The script will automatically check if there exists a new version for your server. If exists, it will:
 
 1. Download and extract the latest server to `~/.cache/`.
-2. Create a `7z` backup of your server at `<PATH_TO_SERVER>/../server_backups/`.
+2. Create a `zip` backup of your server at `<PATH_TO_SERVER>/../server_backups/`.
 3. Update your server while preserving the worlds and configs (`worlds`, `allowlist.json`, `permissions.json`, `server.properties`).
 4. Remove the downloaded server cache to free the disk.
 
@@ -34,7 +34,7 @@ The `auto_update.py` script can take multiple arguments for more fine-grained up
 | `--server_dir`      |           | The directory to the server for update.                         |                                                   |
 | `--download_dir`    | ~/.cache/ | The directory to download the latest server.                    |                                                   |
 | `--target_dir`      | None      | The new directory for the updated server.                       | "None" denotes overwriting the original server.   |
-| `--backup_dir`      | None      | The directory to store the backup files of the original server. | "None" will create a new 'server_backups' folder. |
+| `--backup_dir`      | None      | The directory to store the backup files of the original server. | "None" will create a new "server_backups" folder. |
 | `--backup_type`     | zip       | Type of the server backup file. (`zip` or `7z`)                 | Run `pip install py7zr` first to use `7z`.        |
 | `--keep_cache_num`  | 0         | Number of downloaded server caches to keep                      | -1 denotes infinite, 0 denotes not keeping.       |
 | `--keep_backup_num` | -1        | Number of previous server backups to keep.                      | -1 denotes infinite, 0 denotes not keeping.       |
@@ -55,7 +55,7 @@ python auto_update.py \
 This will lead to the following operations:
 
 1. Download and extract the latest server to `<PATH_TO_DOWNLOAD_SERVER>`.
-2. Create a `zip` backup of your server at `<PATH_TO_STORE_BACKUPS>`.
+2. Create a `7z` backup of your server at `<PATH_TO_STORE_BACKUPS>`.
 3. Create an updated server at `<PATH_TO_UPDATED_SERVER>`, and copy the worlds and configs (`worlds`, `allowlist.json`, `permissions.json`, `server.properties`) from the original server.
 4. Remove the original server at `<PATH_TO_SERVER>`.
 5. Keep the latest 5 downloaded server caches and old server backups on the disk.
