@@ -7,6 +7,7 @@
 
 import argparse
 import datetime
+import json
 import os
 import re
 import shutil
@@ -77,17 +78,53 @@ def download_and_extract_latest_server(download_dir: str, local_version: List[in
             "Accept-Language": "en",
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.33 (KHTML, like Gecko) Chrome/90.0.$RandNum.212 Safari/537.33"
         }
-        search_url = "https://minecraft.net/en-us/download/server/bedrock/"
+        search_url = "https://net-secondary.web.minecraft-services.net/api/v1.0/download/links"
         download_url_template = r'https://www.minecraft.net/bedrockdedicatedserver/bin-linux/[^"]*'
 
         # get the response
         log_message(f"Connecting to {search_url} to get latest server version")
         response = requests.get(search_url, headers=headers)
-        download_url = re.search(download_url_template, response.text)  # extract the version
+
+        """
+        Example Response:
+        {
+          "result": {
+            "links": [
+              {
+                "downloadType": "serverBedrockWindows",
+                "downloadUrl": "https://www.minecraft.net/bedrockdedicatedserver/bin-win/bedrock-server-1.21.102.1.zip"
+              },
+              {
+                "downloadType": "serverBedrockLinux",
+                "downloadUrl": "https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-1.21.102.1.zip"
+              },
+              {
+                "downloadType": "serverBedrockPreviewWindows",
+                "downloadUrl": "https://www.minecraft.net/bedrockdedicatedserver/bin-win-preview/bedrock-server-1.21.110.26.zip"
+              },
+              {
+                "downloadType": "serverBedrockPreviewLinux",
+                "downloadUrl": "https://www.minecraft.net/bedrockdedicatedserver/bin-linux-preview/bedrock-server-1.21.110.26.zip"
+              },
+              {
+                "downloadType": "serverJar",
+                "downloadUrl": "https://piston-data.mojang.com/v1/objects/6bce4ef400e4efaa63a13d5e6f6b500be969ef81/server.jar"
+              }
+            ]
+          }
+        }
+        """
+
+        if response.status_code != 200:
+            raise ConnectionError(f"Failed to connect to {search_url}, status code: {response.status_code}")
+        try:
+            search_result = json.loads(response.text) # check if the response is a valid json
+            download_url = search_result["result"]["links"][1]["downloadUrl"]  # linux server
+        except:
+            download_url = None
 
         # get the url for downloading
         if download_url is not None:  # extract version succeeded
-            download_url = download_url.group(0)
             remote_version = extract_numbers(download_url, match_float=False, match_sign=False)
 
             # download and extract the server
